@@ -36,7 +36,7 @@ import de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment;
 import static de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment.TryParseDouble;
 
 public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-
+    //TODO low prio: anordnung der Textfelder ändern, von nebeneinander, zu untereinander
     private WaehrungsRViewModel waehrungsRViewModel;
     NumberFormat nf = NumberFormat.getNumberInstance(Locale.getDefault());
 

@@ -58,7 +58,8 @@
                 android:digits="1234567890,.-"
                 android:ems="10"
                 android:inputType="number"
-                android:maxLength="12" />
+                android:maxLength="12"
+                android:importantForAutofill="no" />
 
 
             <EditText
@@ -74,7 +75,8 @@
                 android:digits="1234567890,.-"
                 android:ems="10"
                 android:inputType="number"
-                android:maxLength="12" />
+                android:maxLength="12"
+                android:importantForAutofill="no"/>
 
         </LinearLayout>
 
@@ -148,8 +150,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginRight="16dp"
-                            android:layout_weight="1"
-                            android:text="--" />
+                            android:text="@string/emptyPlaceholder" />
 
                     </LinearLayout>
 
@@ -180,7 +181,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginRight="16dp"
-                            android:text="--" />
+                            android:text="@string/emptyPlaceholder" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -227,6 +228,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginRight="16dp"
+                            android:layout_weight="0"
                             android:enabled="false"
                             android:text="@string/randomizeButton" />
 

@@ -41,4 +41,5 @@
     <string name="vorhandeneNoten">Vorhandene Noten</string>
     <string name="randomizeButton">Randomize</string>
     <string name="AutomatSwitch">Automat On/Off</string>
+    <string name="emptyPlaceholder">--</string>
 </resources>
