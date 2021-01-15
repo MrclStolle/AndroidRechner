@@ -22,7 +22,8 @@
         <item>Uganda-Schilling</item>
     </string-array>
 
-    <string name="standWerte">Wechselkurs Stand 12.01.2021</string>
+    <string name="standtxt">Wechselkurs Stand:</string>
+    <string name="standDatum">12.01.2021</string>
     <string-array name="werteBaseEuro"> <!-- Base 1 Euro-->
         <item>1</item> <!-- Euro-->
         <item>1.22</item> <!--US-Dollar-->

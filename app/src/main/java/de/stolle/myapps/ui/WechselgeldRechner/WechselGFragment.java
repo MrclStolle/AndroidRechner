@@ -33,6 +33,7 @@ public class WechselGFragment extends Fragment {
     String[] Noten;
     int minNoten = 5;
     int maxNoten = 30;
+    int[] mengeNoten;
 
     EditText PreisET;
     EditText GebeGeldET;
@@ -40,7 +41,6 @@ public class WechselGFragment extends Fragment {
     TextView WechelgeldScheineTV;
     Switch AutomatOnOff;
     Button RandomizeBT;
-    int[] mengeNoten;
     LinearLayout LayoutGeldnoten;
     LinearLayout LayoutVorhandeneGeldnoten;
     TextView vorhandeneNotenList;

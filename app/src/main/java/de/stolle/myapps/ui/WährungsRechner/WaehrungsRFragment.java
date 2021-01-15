@@ -89,6 +89,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
                 else
                     decimalL.setKeyListener(DigitsKeyListener.getInstance("0123456789" + defaultSeperator));
 
+
                 Calc();
             }
         });
@@ -140,6 +141,9 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         decimalR.setText(nf.format((double)result / 1000));
     }
 
+
+
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Calc();
@@ -149,4 +153,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
 }
+
