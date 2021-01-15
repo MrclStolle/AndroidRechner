@@ -13,13 +13,17 @@ import java.net.URL;
 public class RequestExchangeRate{
 
     String symbols = "USD,AUD,CAD,PLN,MXN";
-        String param = "latest";
+    String param = "latest";
 
     public RequestExchangeRate(String symbols) {
         this.symbols = symbols;
     }
+    public RequestExchangeRate(String symbols, String param) {
+        this.symbols = symbols;
+        this.param = param;
+    }
 
-    protected String GetString() {
+    protected String GetXMLString() {
         String fixerurl = "http://data.fixer.io/api/";
         String access = "?access_key=";
         String apiKey ="755dccb9711de847643fb6fb4636202c";
