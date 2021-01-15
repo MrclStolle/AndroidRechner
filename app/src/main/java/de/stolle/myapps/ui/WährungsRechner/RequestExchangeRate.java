@@ -10,24 +10,15 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RequestExchangeRate{
+public class RequestExchangeRate {
 
-    String symbols = "USD,AUD,CAD,PLN,MXN";
-    String param = "latest";
-
-    public RequestExchangeRate(String symbols) {
-        this.symbols = symbols;
-    }
-    public RequestExchangeRate(String symbols, String param) {
-        this.symbols = symbols;
-        this.param = param;
-    }
-
-    protected String GetXMLString() {
+    static protected String GetXMLString() {
         String fixerurl = "http://data.fixer.io/api/";
+        String param = "latest";
         String access = "?access_key=";
         String apiKey ="755dccb9711de847643fb6fb4636202c";
         String symbolsPre ="&symbols=";
+        String symbols = "USD, GPD, TRY, JPY, BTC, CHF, UGX";
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
@@ -71,3 +62,5 @@ public class RequestExchangeRate{
     }
 
 }
+
+

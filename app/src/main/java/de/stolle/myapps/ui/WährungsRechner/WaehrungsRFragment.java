@@ -45,6 +45,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     EditText decimalL;
     EditText decimalR;
     Button swapSpinner;
+    TextView testView;
 
     String[] werte;
 
@@ -60,6 +61,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
         decimalL = root.findViewById(R.id.decimalL);
         decimalR = root.findViewById(R.id.decimalR);
+        testView = root.findViewById(R.id.testView);
 
         //arbeitet mit dem richtigen seperator je sprache, aber unter DE wird die qwertz-tastatur angezeigt und kein nummernfeld
         //decimalL.setKeyListener(DigitsKeyListener.getInstance(Locale.getDefault(),false, true));
@@ -113,7 +115,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         Calc();
 
 
-
+        System.out.println(RequestExchangeRate.GetXMLString());
 
         return root;
     }
