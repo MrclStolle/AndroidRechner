@@ -18,13 +18,14 @@ public class RequestExchangeRate {
         String access = "?access_key=";
         String apiKey ="755dccb9711de847643fb6fb4636202c";
         String symbolsPre ="&symbols=";
-        String symbols = "USD, GPD, TRY, JPY, BTC, CHF, UGX";
+        String symbols = "USD,GPD,TRY,JPY,BTC,CHF,UGX";
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 
         try {
             URL url = new URL(fixerurl + param + access + apiKey + symbolsPre + symbols);
+            System.out.println(url.toString());
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
