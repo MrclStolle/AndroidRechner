@@ -1,32 +1,36 @@
 package de.stolle.myapps.ui.WährungsRechner;
 
+import android.os.AsyncTask;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
-public class RequestExchangeRate {
+public class JsonTask extends AsyncTask<String, Void, String> {
 
-    static protected String GetXMLString() {
-        String fixerurl = "http://data.fixer.io/api/";
-        String param = "latest";
-        String access = "?access_key=";
-        String apiKey ="755dccb9711de847643fb6fb4636202c";
-        String symbolsPre ="&symbols=";
-        String symbols = "USD,GPD,TRY,JPY,BTC,CHF,UGX";
+    @Override
+    protected String doInBackground(String... strings) {
+
 
         HttpURLConnection connection = null;
-        BufferedReader reader = null;
+        BufferedReader reader= null;
 
         try {
-            URL url = new URL(fixerurl + param + access + apiKey + symbolsPre + symbols);
+            URL url = new URL(strings[0]);
             System.out.println(url.toString());
             connection = (HttpURLConnection) url.openConnection();
+            //connection.setConnectTimeout();
+            //System.out.println( connection.getConnectTimeout());
             connection.connect();
 
             InputStream stream = connection.getInputStream();
@@ -37,7 +41,7 @@ public class RequestExchangeRate {
             String line = "";
 
             while ((line = reader.readLine()) != null) {
-                buffer.append(line+"\n");
+                buffer.append(line + "\n");
                 Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
             }
@@ -61,7 +65,6 @@ public class RequestExchangeRate {
         }
         return null;
     }
-
 }
 
 

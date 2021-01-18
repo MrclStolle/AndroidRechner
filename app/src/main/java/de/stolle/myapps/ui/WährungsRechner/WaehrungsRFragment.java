@@ -1,6 +1,5 @@
 package de.stolle.myapps.ui.WährungsRechner;
 
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,22 +15,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.Locale;
 
 import de.stolle.myapps.R;
-import de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment;
 
 import static de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment.TryParseDouble;
 
@@ -48,6 +42,18 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     TextView testView;
 
     String[] werte;
+
+    /*  //url-konstruktion
+        String fixerurl = "http://data.fixer.io/api/";
+        String param = "latest";
+        String access = "?access_key=";
+        String apiKey = "755dccb9711de847643fb6fb4636202c";
+        String symbolsPre = "&symbols=";
+        String symbols = "USD,GPD,TRY,JPY,BTC,CHF,UGX";
+        String format = "&format=1";
+        String urlString = fixerurl + param + access + apiKey + symbolsPre + symbols + format;
+     */
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -114,8 +120,9 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
         Calc();
 
-
-        System.out.println(RequestExchangeRate.GetXMLString());
+        System.out.println(
+                //sendet eine Anfrage an die Adresse und gibt ein String zurück
+                new JsonTask().execute("http://data.fixer.io/api/latest?access_key=755dccb9711de847643fb6fb4636202c&symbols=USD,GPD,TRY,JPY,BTC,CHF,UGX&format=1"));
 
         return root;
     }
@@ -130,7 +137,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     private void Calc(){
 
         double input = TryParseDouble(decimalL.getText().toString().replace(",","."),0d);
-        System.out.println("inputI " + input);
+        //System.out.println("inputI " + input);
 
         long inputI = (long) (input*1000);
 
@@ -138,7 +145,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         double valueRD = TryParseDouble(werte[(int)spinnerR.getSelectedItemId()],0d);
 
         long result = (long)((inputI * valueRD)/valueLD);
-        System.out.println("result " + result);
+        //System.out.println("result " + result);
 
         decimalR.setText(nf.format((double)result / 1000));
     }

@@ -29,8 +29,7 @@ public class CurrentRates {
         this.success =jsonObject.getBoolean("success");
 
         String dateString = jsonObject.getString("date");
-
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd.MM.yyyy"); // TODO .ofPattern verlangt API-Version 26
         LocalDateTime myDateObj = LocalDateTime.parse(dateString,myFormatObj);
         this.date = myDateObj;
 
@@ -83,4 +82,6 @@ public class CurrentRates {
             this.UGX = UGX;
         }
     }
+
+
 }
