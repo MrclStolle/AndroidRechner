@@ -66,5 +66,3 @@ public class JsonTask extends AsyncTask<String, Void, String> {
         return null;
     }
 }
-
-

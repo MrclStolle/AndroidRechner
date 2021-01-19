@@ -1,5 +1,7 @@
 package de.stolle.myapps.ui.WährungsRechner;
 
+import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,10 +22,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.json.JSONException;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import de.stolle.myapps.R;
 
@@ -43,6 +48,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
     String[] werte;
 
+    CurrentRates currentRates;
     /*  //url-konstruktion
         String fixerurl = "http://data.fixer.io/api/";
         String param = "latest";
@@ -120,9 +126,25 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
         Calc();
 
-        System.out.println(
-                //sendet eine Anfrage an die Adresse und gibt ein String zurück
-                new JsonTask().execute("http://data.fixer.io/api/latest?access_key=755dccb9711de847643fb6fb4636202c&symbols=USD,GPD,TRY,JPY,BTC,CHF,UGX&format=1"));
+        String result = null;
+        try {
+            result = new JsonTask().execute("http://data.fixer.io/api/latest?access_key=755dccb9711de847643fb6fb4636202c&symbols=USD,GPD,TRY,JPY,BTC,CHF,UGX&format=1").get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (result!=null){
+            try {
+                currentRates = new CurrentRates(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        System.out.println(currentRates.rates.USD);
+
 
         return root;
     }
