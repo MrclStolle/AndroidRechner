@@ -11,28 +11,39 @@
     <string name="menu_waehrungsR">Währung-Umrechner</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="url">http://data.fixer.io/api/_PHAC__PHS_&amp;format=1</string>
+    <string name="accesskey">latest?access_key=755dccb9711de847643fb6fb4636202c</string>
+
+    <string-array name="waehrungenkurz">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>TRY</item>
+        <item>JPY</item>
+        <item>BTC</item>
+        <item>CHF</item>
+    </string-array>
+
     <string-array name="waehrungen">
         <item>Euro</item> <!-- -->
         <item>US-Dollar</item>
-        <item>Pfund Sterling</item>
         <item>Türkische Lire</item>
         <item>Yen</item>
         <item>Bitcoin</item>
         <item>Schweizer Franken</item>
-        <item>Uganda-Schilling</item>
     </string-array>
 
+
+
     <string name="standtxt">Wechselkurs Stand:</string>
-    <string name="standDatum">12.01.2021</string>
-    <string-array name="werteBaseEuro"> <!-- Base 1 Euro-->
+    <string name="standDatumErsatzwerte">12.01.2021</string>
+    <string-array name="ersatzwerteBaseEuro"> <!-- Base 1 Euro-->
         <item>1</item> <!-- Euro-->
         <item>1.22</item> <!--US-Dollar-->
-        <item>0.89</item> <!--Pfund Sterling-->
         <item>9.11</item> <!--Türkische Lire-->
         <item>126.67</item> <!--Yen-->
         <item>0.000034</item> <!--Bitcoin-->
         <item>1.08</item> <!--Schweizer Franken-->
-        <item>4500.17</item> <!--Uganda-Schilling-->
+
     </string-array>
 
     <string name="preis">Preis in €</string>

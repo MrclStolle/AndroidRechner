@@ -1,7 +1,5 @@
 package de.stolle.myapps.ui.WährungsRechner;
 
-import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,8 +33,8 @@ import de.stolle.myapps.R;
 import static de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment.TryParseDouble;
 
 public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    //TODO low prio: anordnung der Textfelder ändern, von nebeneinander, zu untereinander
     private WaehrungsRViewModel waehrungsRViewModel;
+    //TODO low prio: anordnung der Textfelder ändern, von nebeneinander, zu untereinander
     NumberFormat nf = NumberFormat.getNumberInstance(Locale.getDefault());
 
     Spinner spinnerL;
@@ -44,9 +42,10 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     EditText decimalL;
     EditText decimalR;
     Button swapSpinner;
+    TextView date;
     TextView testView;
 
-    String[] werte;
+    Double[] werte;
 
     CurrentRates currentRates;
     /*  //url-konstruktion
@@ -55,12 +54,14 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         String access = "?access_key=";
         String apiKey = "755dccb9711de847643fb6fb4636202c";
         String symbolsPre = "&symbols=";
-        String symbols = "USD,GPD,TRY,JPY,BTC,CHF,UGX";
+        String symbols = "USD,TRY,JPY,BTC,CHF,UGX";
         String format = "&format=1";
         String urlString = fixerurl + param + access + apiKey + symbolsPre + symbols + format;
      */
-
-
+    String url;
+    String accesskey;
+    String[] waehrungenkurz;
+    String placeholderSymbols = "&symbols=";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,13 +70,32 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
                 new ViewModelProvider(this).get(WaehrungsRViewModel.class);
         View root = inflater.inflate(R.layout.fragment_waehrungsrechner, container, false);
 
-        werte = getResources().getStringArray(R.array.werteBaseEuro);
+        //get static strings
+        url = getResources().getString(R.string.url);
+        accesskey = getResources().getString(R.string.accesskey);
+        waehrungenkurz = getResources().getStringArray(R.array.waehrungenkurz);
+
+
+        //url konstruktion
+        for (int i = 0; i< waehrungenkurz.length; i++){
+            placeholderSymbols+= waehrungenkurz[i];
+            if (i!= waehrungenkurz.length-1)
+                placeholderSymbols+=",";
+        }
+        url = url.replace("_PHAC_", accesskey);
+        url = url.replace("_PHS_", placeholderSymbols);
+
+        //send request and implement into app/place values, creates currentRates
+        System.out.println(url);
+        RequestAndSaveRates(url);
 
         decimalL = root.findViewById(R.id.decimalL);
         decimalR = root.findViewById(R.id.decimalR);
+        date = root.findViewById(R.id.Date);
+        date.setText(currentRates.date);
         testView = root.findViewById(R.id.testView);
 
-        //arbeitet mit dem richtigen seperator je sprache, aber unter DE wird die qwertz-tastatur angezeigt und kein nummernfeld
+        //v arbeitet mit dem richtigen seperator je sprache, aber unter DE wird die qwertz-tastatur angezeigt und kein nummernfeld
         //decimalL.setKeyListener(DigitsKeyListener.getInstance(Locale.getDefault(),false, true));
 
         //sucht den richtigen seperator der eingestellten sprache raus
@@ -108,14 +128,14 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
             }
         });
 
-
-        spinnerL = root.findViewById(R.id.spinnerL);
-        spinnerR = root.findViewById(R.id.spinnerR);
-
         swapSpinner = root.findViewById(R.id.swapSpinnerBtn);
         swapSpinner.setOnClickListener(this::BtSwapSpinner);
 
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),R.array.waehrungen, R.layout.spinner_style);
+        //richtet die beiden spinner ein
+        spinnerL = root.findViewById(R.id.spinnerL);
+        spinnerR = root.findViewById(R.id.spinnerR);
+
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),R.array.waehrungenkurz, R.layout.spinner_style);
 
         spinnerL.setAdapter(spinnerAdapter);
         spinnerR.setAdapter(spinnerAdapter);
@@ -124,29 +144,57 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         spinnerR.setOnItemSelectedListener(this);
         spinnerR.setSelection(1);
 
+
+
+
+
+
+
         Calc();
 
+        return root;
+    }
+
+    private void RequestAndSaveRates(String url) {
         String result = null;
+
+        //abfrage der Rates über url
         try {
-            result = new JsonTask().execute("http://data.fixer.io/api/latest?access_key=755dccb9711de847643fb6fb4636202c&symbols=USD,GPD,TRY,JPY,BTC,CHF,UGX&format=1").get();
+            result = new JsonTask().execute(url).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //verarbeiten des gesendeten strings(json)
         if (result!=null){
             try {
-                currentRates = new CurrentRates(result);
+                currentRates = new CurrentRates(result, waehrungenkurz);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            werte= new Double[waehrungenkurz.length];
+            int index =0;
+            for (String symbol :waehrungenkurz
+                    ) {
+                werte[index]= currentRates.RatesTable.get(symbol);
+                index++;
+            }
+
+
+        }else  {
+            //wenn result==NULL, dann sollen standardwerte geladen werden
+            werte = new Double[getResources().getStringArray(R.array.ersatzwerteBaseEuro).length];
+            int index=0;
+            for (String wert: getResources().getStringArray(R.array.ersatzwerteBaseEuro)
+                 ) {
+                werte[index]= Double.parseDouble(wert);
+                index++;
+            }
+
         }
-        System.out.println(currentRates.rates.USD);
-
-
-        return root;
     }
 
     private void BtSwapSpinner(View view) {
@@ -161,12 +209,13 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         double input = TryParseDouble(decimalL.getText().toString().replace(",","."),0d);
         //System.out.println("inputI " + input);
 
-        long inputI = (long) (input*1000);
+        int inputI = (int) (input*1000);
 
-        double valueLD = TryParseDouble(werte[(int)spinnerL.getSelectedItemId()],0d);
-        double valueRD = TryParseDouble(werte[(int)spinnerR.getSelectedItemId()],0d);
 
-        long result = (long)((inputI * valueRD)/valueLD);
+        double valueLD = werte[(int)spinnerL.getSelectedItemId()];
+        double valueRD = werte[(int)spinnerR.getSelectedItemId()];
+
+        int result = (int)((inputI * valueRD)/valueLD);
         //System.out.println("result " + result);
 
         decimalR.setText(nf.format((double)result / 1000));
