@@ -34,6 +34,7 @@ public class CurrentRates {
         //this.date = myDateObj;
 
         if (success){
+            //datum formatieren
             String dateString = jsonObject.getString("date");
             String[] dateSplit = dateString.split("-");
             this.date= dateSplit[2] +"."+ dateSplit[1] +"."+ dateSplit[0];

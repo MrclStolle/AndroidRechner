@@ -33,10 +33,8 @@ import de.stolle.myapps.R;
 import static de.stolle.myapps.ui.WechselgeldRechner.WechselGFragment.TryParseDouble;
 
 public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    private WaehrungsRViewModel waehrungsRViewModel;
     //TODO low prio: anordnung der Textfelder ändern, von nebeneinander, zu untereinander
     NumberFormat nf = NumberFormat.getNumberInstance(Locale.getDefault());
-
     Spinner spinnerL;
     Spinner spinnerR;
     EditText decimalL;
@@ -44,9 +42,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     Button swapSpinner;
     TextView date;
     TextView testView;
-
     Double[] werte;
-
     CurrentRates currentRates;
     /*  //url-konstruktion
         String fixerurl = "http://data.fixer.io/api/";
@@ -62,6 +58,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     String accesskey;
     String[] waehrungenkurz;
     String placeholderSymbols = "&symbols=";
+    private WaehrungsRViewModel waehrungsRViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,10 +74,10 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
 
         //url konstruktion
-        for (int i = 0; i< waehrungenkurz.length; i++){
-            placeholderSymbols+= waehrungenkurz[i];
-            if (i!= waehrungenkurz.length-1)
-                placeholderSymbols+=",";
+        for (int i = 0; i < waehrungenkurz.length; i++) {
+            placeholderSymbols += waehrungenkurz[i];
+            if (i != waehrungenkurz.length - 1)
+                placeholderSymbols += ",";
         }
         url = url.replace("_PHAC_", accesskey);
         url = url.replace("_PHS_", placeholderSymbols);
@@ -118,7 +115,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
             @Override
             public void afterTextChanged(Editable s) {
                 //begrenzt die erlaubten zeichen je na vorhanden sein des seperators
-                if(s.toString().contains(defaultSeperator))
+                if (s.toString().contains(defaultSeperator))
                     decimalL.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
                 else
                     decimalL.setKeyListener(DigitsKeyListener.getInstance("0123456789" + defaultSeperator));
@@ -135,7 +132,7 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         spinnerL = root.findViewById(R.id.spinnerL);
         spinnerR = root.findViewById(R.id.spinnerR);
 
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),R.array.waehrungenkurz, R.layout.spinner_style);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(), R.array.waehrungenkurz, R.layout.spinner_style);
 
         spinnerL.setAdapter(spinnerAdapter);
         spinnerR.setAdapter(spinnerAdapter);
@@ -143,11 +140,6 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         spinnerL.setOnItemSelectedListener(this);
         spinnerR.setOnItemSelectedListener(this);
         spinnerR.setSelection(1);
-
-
-
-
-
 
 
         Calc();
@@ -168,29 +160,29 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
         }
 
         //verarbeiten des gesendeten strings(json)
-        if (result!=null){
+        if (result != null) {
             try {
                 currentRates = new CurrentRates(result, waehrungenkurz);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            werte= new Double[waehrungenkurz.length];
-            int index =0;
-            for (String symbol :waehrungenkurz
-                    ) {
-                werte[index]= currentRates.RatesTable.get(symbol);
+            werte = new Double[waehrungenkurz.length];
+            int index = 0;
+            for (String symbol : waehrungenkurz
+            ) {
+                werte[index] = currentRates.RatesTable.get(symbol);
                 index++;
             }
 
 
-        }else  {
+        } else {
             //wenn result==NULL, dann sollen standardwerte geladen werden
             werte = new Double[getResources().getStringArray(R.array.ersatzwerteBaseEuro).length];
-            int index=0;
-            for (String wert: getResources().getStringArray(R.array.ersatzwerteBaseEuro)
-                 ) {
-                werte[index]= Double.parseDouble(wert);
+            int index = 0;
+            for (String wert : getResources().getStringArray(R.array.ersatzwerteBaseEuro)
+            ) {
+                werte[index] = Double.parseDouble(wert);
                 index++;
             }
 
@@ -198,30 +190,28 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
     }
 
     private void BtSwapSpinner(View view) {
-    int tempInt = spinnerL.getSelectedItemPosition();
-    spinnerL.setSelection(spinnerR.getSelectedItemPosition());
-    spinnerR.setSelection(tempInt);
-    Calc();
+        int tempInt = spinnerL.getSelectedItemPosition();
+        spinnerL.setSelection(spinnerR.getSelectedItemPosition());
+        spinnerR.setSelection(tempInt);
+        Calc();
     }
 
-    private void Calc(){
+    private void Calc() {
 
-        double input = TryParseDouble(decimalL.getText().toString().replace(",","."),0d);
+        double input = TryParseDouble(decimalL.getText().toString().replace(",", "."), 0d);
         //System.out.println("inputI " + input);
 
-        int inputI = (int) (input*1000);
+        long inputI = (long) (input * 1000);
 
 
-        double valueLD = werte[(int)spinnerL.getSelectedItemId()];
-        double valueRD = werte[(int)spinnerR.getSelectedItemId()];
+        double valueLD = werte[(int) spinnerL.getSelectedItemId()];
+        double valueRD = werte[(int) spinnerR.getSelectedItemId()];
 
-        int result = (int)((inputI * valueRD)/valueLD);
+        long result = (long) ((inputI * valueRD) / valueLD);
         //System.out.println("result " + result);
 
-        decimalR.setText(nf.format((double)result / 1000));
+        decimalR.setText(nf.format((double) result / 1000));
     }
-
-
 
 
     @Override

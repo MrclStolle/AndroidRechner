@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:maxLength="16"
+                android:maxLength="12"
                 android:text="1" />
                 <!--android:digits="1234567890,."-->
 

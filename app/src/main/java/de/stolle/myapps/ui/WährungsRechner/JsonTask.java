@@ -19,14 +19,14 @@ import java.nio.charset.Charset;
 public class JsonTask extends AsyncTask<String, Void, String> {
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected String doInBackground(String... urlStrings) {
 
 
         HttpURLConnection connection = null;
         BufferedReader reader= null;
 
         try {
-            URL url = new URL(strings[0]);
+            URL url = new URL(urlStrings[0]);
             System.out.println(url.toString());
             connection = (HttpURLConnection) url.openConnection();
             //connection.setConnectTimeout();

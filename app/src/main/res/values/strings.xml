@@ -43,7 +43,6 @@
         <item>126.67</item> <!--Yen-->
         <item>0.000034</item> <!--Bitcoin-->
         <item>1.08</item> <!--Schweizer Franken-->
-
     </string-array>
 
     <string name="preis">Preis in €</string>
