@@ -55,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:entries="@array/waehrungen"
-                android:scrollbarSize="4dp"/>
+                android:scrollbarSize="4dp" />
 
 
             <Button

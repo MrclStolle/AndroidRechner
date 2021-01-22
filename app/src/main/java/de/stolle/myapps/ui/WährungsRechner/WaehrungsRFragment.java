@@ -84,13 +84,13 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
         //send request and implement into app/place values, creates currentRates
         System.out.println(url);
+        testView = root.findViewById(R.id.testView);
         RequestAndSaveRates(url);
-
         decimalL = root.findViewById(R.id.decimalL);
         decimalR = root.findViewById(R.id.decimalR);
         date = root.findViewById(R.id.Date);
         date.setText(currentRates.date);
-        testView = root.findViewById(R.id.testView);
+
 
         //v arbeitet mit dem richtigen seperator je sprache, aber unter DE wird die qwertz-tastatur angezeigt und kein nummernfeld
         //decimalL.setKeyListener(DigitsKeyListener.getInstance(Locale.getDefault(),false, true));
@@ -161,31 +161,44 @@ public class WaehrungsRFragment extends Fragment implements AdapterView.OnItemSe
 
         //verarbeiten des gesendeten strings(json)
         if (result != null) {
+            //wenn der zurückkommende String nicht leer ist
             try {
                 currentRates = new CurrentRates(result, waehrungenkurz);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            werte = new Double[waehrungenkurz.length];
-            int index = 0;
-            for (String symbol : waehrungenkurz
-            ) {
-                werte[index] = currentRates.RatesTable.get(symbol);
-                index++;
+            if(currentRates.success) {
+                //wenn die antwort kein Error ist
+                werte = new Double[waehrungenkurz.length];
+                int index = 0;
+                for (String symbol : waehrungenkurz
+                ) {
+                    werte[index] = currentRates.RatesTable.get(symbol);
+                    index++;
+                }
+            }else{
+                //wenn die Antwort ein Error ist
+                LoadAlternateRates();
+                System.out.println("code: " + currentRates.error.code);
+                System.out.println("type: " + currentRates.error.type);
+                System.out.println("info: " + currentRates.error.info);
+                testView.setText("Daten wurden nicht geladen\nCode: " + currentRates.error.code + "\nInfo: " + currentRates.error.info);
             }
-
 
         } else {
             //wenn result==NULL, dann sollen standardwerte geladen werden
-            werte = new Double[getResources().getStringArray(R.array.ersatzwerteBaseEuro).length];
-            int index = 0;
-            for (String wert : getResources().getStringArray(R.array.ersatzwerteBaseEuro)
-            ) {
-                werte[index] = Double.parseDouble(wert);
-                index++;
-            }
+            LoadAlternateRates();
 
+        }
+    }
+
+    private void LoadAlternateRates() {
+        werte = new Double[getResources().getStringArray(R.array.ersatzwerteBaseEuro).length];
+        int index = 0;
+        for (String wert : getResources().getStringArray(R.array.ersatzwerteBaseEuro)
+        ) {
+            werte[index] = Double.parseDouble(wert);
+            index++;
         }
     }
 

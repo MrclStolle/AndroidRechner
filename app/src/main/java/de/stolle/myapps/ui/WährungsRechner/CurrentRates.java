@@ -57,8 +57,10 @@ public class CurrentRates {
         }else  {
             JSONObject errorobj = jsonObject.getJSONObject("error");
             this.error = new Error(errorobj.getInt("code"),
-                    errorobj.getString("info")
+                    errorobj.getString("info"),
+                    errorobj.getString("type")
             );
+
         }
 
     }
@@ -66,10 +68,12 @@ public class CurrentRates {
     class Error {
         int code;
         String info;
+        String type;
 
-        public Error(int code, String info) {
+        public Error(int code, String info, String type) {
             this.code = code;
             this.info = info;
+            this.type=type;
         }
     }
 

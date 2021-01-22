@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">MyApps</string>
+    <string name="navigation_drawer_open">Ouvrir la navigation</string>
+    <string name="navigation_drawer_close">Fermer la navigation</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">E-Mail</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+    <string name="action_settings">Réglages</string>
+
+    <string name="menu_wechselgeldR">Changer de calculatrice</string>
+    <string name="menu_waehrungsR">Calculatrice de devises</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+
+    <string-array name="waehrungen">
+        <item>Euro</item> <!-- -->
+        <item>US-Dollar</item>
+        <item>Turk Lire</item>
+        <item>Yen</item>
+        <item>Bitcoin</item>
+        <item>Suisse Franc</item>
+    </string-array>
+
+
+
+    <string name="standtxt">Éxchange Taux Date:</string>
+    <string name="standDatumErsatzwerte">12.01.2021</string>
+
+
+    <string name="preis">Prix en €</string>
+    <string name="gebegeld">Donner en €</string>
+    <string name="wechselgeld">Changement in €</string>
+    <string name="wechselgeldNoten">Billets</string>
+    <string name="vorhandeneNoten">Billets disponibles:</string>
+    <string name="randomizeButton">Randomiser</string>
+    <string name="AutomatSwitch">Automat On/Off</string>
+    <string name="emptyPlaceholder">--</string>
+
+</resources>
